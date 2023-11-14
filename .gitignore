@@ -1,2 +1,4 @@
 venv/
 *_output_file.txt
+mytest.txt
+__pycache__/

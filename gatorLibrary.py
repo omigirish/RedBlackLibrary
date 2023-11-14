@@ -1,24 +1,40 @@
 import sys
+from RedBlackTree import RedBlackTree
 
-def read_and_print_file(filename):
-    try:
-        with open(filename, 'r') as file:
-            content = file.read()
-            print("File Content:")
-            print(content)
-    except FileNotFoundError:
-        print(f"Error: File '{filename}' not found.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-if __name__ == "__main__":
+from supportFunctions import *
+    
+@trackExecutionTime
+def main():
     # Check if a filename is provided as a command line argument
     if len(sys.argv) != 2:
         print("Usage: python script.py <filename>")
         sys.exit(1)
 
     # Get the filename from the command line argument
-    filename = sys.argv[1]
+    input_filename = sys.argv[1]
+    # Compute the filename of outputfile
+    output_filename = f"{input_filename.split('.')[0]}_output_file.txt"
+    rb_tree = RedBlackTree()
+    function_map = {"PrintBook":rb_tree.PrintBook, "PrintBooks":rb_tree.PrintBooks, "InsertBook": rb_tree.InsertBook, "BorrowBook":rb_tree.BorrowBook, "ReturnBook":rb_tree.ReturnBook, "DeleteBook":rb_tree.DeleteBook, "FindClosestBook": rb_tree.FindClosestBook, "ColorFlipCount":rb_tree.ColorFlipCount,  "Quit":rb_tree.Quit }
 
-    # Read and print the content of the file
-    read_and_print_file(filename)
+    # try:
+    with open(input_filename, 'r') as input_file, open(output_filename, 'w') as output_file:
+        # Read Input Commands line by line
+        for command in input_file:
+            function = command.strip().split("(")[0]
+            parameters = command.strip().split("(")[1].replace('"', '')[:-1].strip(")").split(", ")
+            print(parameters)
+            if parameters == ['']:
+                parameters=[]
+            # Perform required function
+            op= function_map[function](*parameters)
+            # Write function output to file
+            print(op)
+            output_file.write(f"{op}")
+    # except FileNotFoundError:
+    #     print(f"Error: File '{input_filename}' not found.")
+    # except Exception as e:
+    #     print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    main()
