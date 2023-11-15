@@ -23,13 +23,12 @@ def main():
         for command in input_file:
             function = command.strip().split("(")[0]
             parameters = command.strip().split("(")[1].replace('"', '')[:-1].strip(")").split(", ")
-            print(parameters)
             if parameters == ['']:
                 parameters=[]
             # Perform required function
             op= function_map[function](*parameters)
+            
             # Write function output to file
-            print(op)
             output_file.write(f"{op}")
     # except FileNotFoundError:
     #     print(f"Error: File '{input_filename}' not found.")

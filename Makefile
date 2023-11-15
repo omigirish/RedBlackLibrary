@@ -9,6 +9,10 @@ VENV_DIR = venv
 .PHONY: all clean test
 
 all: venv
+	$(PYTHON) gatorlibrary.py test1.txt
+	$(PYTHON) gatorlibrary.py test2.txt
+	$(PYTHON) gatorlibrary.py test3.txt
+	$(PYTHON) gatorlibrary.py test4.txt
 
 venv:
 	$(PYTHON) -m venv $(VENV_DIR)

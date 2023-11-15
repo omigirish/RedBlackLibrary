@@ -14,7 +14,7 @@ class Book:
                f"Reservations = {self.get_reservation_list()}\n\n"
 
     def get_reservation_list(self):
-        return [reservation[0] for reservation in self.ReservationHeap]
+        return [ reservation[0] for reservation in self.ReservationHeap ]
 
     def add_reservation(self, patron_id, priority_number, time_of_reservation):
         reservation = (patron_id, priority_number, time_of_reservation)
@@ -36,9 +36,9 @@ class Book:
         patron_id1, priority_number1, time_of_reservation1 = self.ReservationHeap[index1]
         patron_id2, priority_number2, time_of_reservation2 = self.ReservationHeap[index2]
 
-        if priority_number1 < priority_number2 or (priority_number1 == priority_number2 and time_of_reservation1 < time_of_reservation2):
+        if priority_number1 < priority_number2 or (priority_number1 == priority_number2 and time_of_reservation1 > time_of_reservation2):
             return -1
-        elif priority_number1 > priority_number2 or (priority_number1 == priority_number2 and time_of_reservation1 > time_of_reservation2):
+        elif priority_number1 > priority_number2 or (priority_number1 == priority_number2 and time_of_reservation1 < time_of_reservation2):
             return 1
         else:
             return 0

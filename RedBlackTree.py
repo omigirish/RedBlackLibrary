@@ -96,30 +96,44 @@ class RedBlackTree:
             if z.parent == z.parent.parent.right:         # if parent is right child of its parent
                 lg = z.parent.parent.left                  # Left child of grandparent
                 if lg.color == "RED":                          # if color of left child of grandparent i.e, uncle node is red
-                    lg.color = "BLACK"                           # Set both children of grandparent node as black
+                    lg.color = "BLACK"
+                    self.color_flip_count+=1    
+                                           # Set both children of grandparent node as black
                     z.parent.color = "BLACK"
+                    self.color_flip_count+=1
+
                     z.parent.parent.color = "RED"             # Set grandparent node as Red
+                    self.color_flip_count+=1
+                    
                     z = z.parent.parent                   # Repeat the algo with Parent node to check conflicts
                 else:
                     if z == z.parent.left:                # If k is left child of it's parent
                         z = z.parent
                         self.RightRotate(z)                        # Call for right rotation
+                        
                     z.parent.color = "BLACK"
+                    self.color_flip_count+=1
                     z.parent.parent.color = "RED"
+                    self.color_flip_count+=1
                     self.LeftRotate(z.parent.parent)
             else:                                         # if parent is left child of its parent
                 rg = z.parent.parent.right                 # Right child of grandparent
                 if rg.color == 'Red':                          # if color of right child of grandparent i.e, uncle node is red
                     rg.color = "BLACK"                           # Set color of childs as black
+                    self.color_flip_count+=1
                     z.parent.color = "BLACK"
+                    self.color_flip_count+=1
                     z.parent.parent.color = "RED"             # set color of grandparent as Red
+                    self.color_flip_count+=1
                     z = z.parent.parent                   # Repeat algo on grandparent to remove conflicts
                 else:
                     if z == z.parent.right:               # if k is right child of its parent
                         z = z.parent
                         self.LeftRotate(z)                        # Call left rotate on parent of k
                     z.parent.color = "BLACK"
+                    self.color_flip_count+=1
                     z.parent.parent.color = "RED"
+                    self.color_flip_count+=1
                     self.RightRotate(z.parent.parent)              # Call right rotate on grandparent
             if z == self.root:                            # If k reaches root then break
                 break
@@ -141,46 +155,60 @@ class RedBlackTree:
                 w = x.parent.right
                 if w.color == "RED":
                     w.color = "BLACK"
+                    self.color_flip_count+=1
                     x.parent.color = "RED"
+                    self.color_flip_count+=1
                     self.LeftRotate(x.parent)
                     w = x.parent.right
 
                 if w.left.color == "BLACK" and w.right.color == "BLACK":
                     w.color = "RED"
+                    self.color_flip_count+=1
                     x = x.parent
                 else:
                     if w.right.color == "BLACK":
                         w.left.color = "BLACK"
+                        self.color_flip_count+=1
                         w.color = "RED"
+                        self.color_flip_count+=1
                         self.RightRotate(w)
                         w = x.parent.right
 
                     w.color = x.parent.color
                     x.parent.color = "BLACK"
+                    self.color_flip_count+=1
                     w.right.color = "BLACK"
+                    self.color_flip_count+=1
                     self.LeftRotate(x.parent)
                     x = self.root
             else:
                 w = x.parent.left
                 if w.color == "RED":
                     w.color = "BLACK"
+                    self.color_flip_count+=1
                     x.parent.color = "RED"
+                    self.color_flip_count+=1
                     self.RightRotate(x.parent)
                     w = x.parent.left
 
                 if w.right.color == "BLACK" and w.left.color == "BLACK":
                     w.color = "RED"
+                    self.color_flip_count+=1
                     x = x.parent
                 else:
                     if w.left.color == "BLACK":
                         w.right.color = "BLACK"
+                        self.color_flip_count+=1
                         w.color = "RED"
+                        self.color_flip_count+=1
                         self.LeftRotate(w)
                         w = x.parent.left
 
                     w.color = x.parent.color
                     x.parent.color = "BLACK"
+                    self.color_flip_count+=1
                     w.left.color = "BLACK"
+                    self.color_flip_count+=1
                     self.RightRotate(x.parent)
                     x = self.root
 
@@ -211,6 +239,7 @@ class RedBlackTree:
             y.left = z.left
             y.left.parent = y
             y.color = z.color
+            self.color_flip_count+=1
 
         if y_original_color == "BLACK":
             self.DeleteFixup(x)
@@ -223,35 +252,33 @@ class RedBlackTree:
     def InsertBook(self, book_id, book_name, author_name, availability_status=True, borrowed_by=None, reservation_heap=None):
         book = Book(book_id, book_name, author_name, availability_status, borrowed_by)
         self.Insert(book)
-        print("Inserting Book")
-        print(book)
         return ""
 
     def DeleteBook(self, book_id):
         z = self.SearchBookNode(self.root, book_id)
-        reservation = z.book.get_reservation_list()
-        if z is not None:
+        reservation = [str(x) for x in z.book.get_reservation_list()]
+        if z is not None and z.book.BookId !=0:
             self.Delete(z)
-            return f"Book {book_id} is no longer available. Reservations made by Patrons {', '.join(reservation)} have been cancelled!\n\n"
+            if len(reservation)>1:
+                return f"Book {book_id} is no longer available. Reservations made by Patrons {', '.join(reservation)} have been cancelled!\n\n"
+            elif len(reservation)==1:
+                return f"Book {book_id} is no longer available. Reservation made by Patron {reservation[0]} has been cancelled!\n\n"
+            else:
+                return f"Book {book_id} is no longer available.\n\n"
         else:
-            print(f"Book {book_id} not found in the Library\n\n")
+            return f"Book {book_id} not found in the Library\n\n"
 
     def SearchBookNode(self, node, book_id):
-        print(f"Srarching Node with id: {book_id}")
-        print("Starting with node")
-        print(node.book)
         while node != self.NULL and int(book_id) != int(node.book.BookId):
             if int(book_id) < int(node.book.BookId):
-                print("Searching Left")
                 node = node.left
             else:
-                print("Searching Right")
                 node = node.right
         return node
 
     def PrintBook(self, book_id):
         node = self.SearchBookNode(self.root, book_id)
-        if node is not None:
+        if (node is not None) and (node.book.BookId != 0):
             return str(node.book)
         else:
             return f"Book {book_id} not found in the Library\n\n"
@@ -263,7 +290,7 @@ class RedBlackTree:
             for book in books:
                 opstring+=str(book)
         else:
-            opstring ="No books found in the given range."
+            opstring ="No Books found in the given range."
         return opstring
 
     def GetBooksInRange(self, node, book_id1, book_id2):
@@ -283,10 +310,10 @@ class RedBlackTree:
             if book_node.book.AvailabilityStatus:
                 book_node.book.AvailabilityStatus = False
                 book_node.book.BorrowedBy = patron_id
-                return f"Book {book_id} borrowed by Patron {patron_id}\n\n"
+                return f"Book {book_id} Borrowed by Patron {patron_id}\n\n"
             else:
-                book_node.book.add_reservation(patron_id, patron_priority, time.time())
-                return f"Book {book_id} reserved by Patron {patron_id}\n\n"
+                book_node.book.add_reservation(int(patron_id), int(patron_priority), time.time())
+                return f"Book {book_id} Reserved by Patron {patron_id}\n\n"
         else:
             return f"Book {book_id} not found in the Library\n\n"
 
@@ -300,12 +327,12 @@ class RedBlackTree:
                 reservation = book_node.book.ReservationHeap.pop(0)
                 book_node.book.BorrowedBy = reservation[0]
                 opmssg += f"Book {book_id} Allotted to Patron {reservation[0]}\n\n"
+                book_node.book.AvailabilityStatus = False
             return opmssg
         else:
             return f"Book {book_id} not found in the Library or not borrowed by Patron {patron_id}\n\n"
 
     def FindClosestBook(self, target_id):
-        print(f"Find Closest for {target_id}")
         closest_nodes = self.FindClosestBookHelper(self.root, target_id)
         if closest_nodes:
             return "".join([str(book) for book in closest_nodes])
@@ -329,8 +356,6 @@ class RedBlackTree:
 
             # Find the inorder predecessor and successor
             pred, succ = self.InorderPredecessorSuccessor(target_id)
-            print(pred.book)
-            print(succ.book)
 
             # Calculate distances to the target ID
             pred_distance = abs(int(pred.book.BookId) - int(target_id)) if pred else float('inf')
@@ -373,7 +398,6 @@ class RedBlackTree:
         return pred, succ
 
     def ColorFlipCount(self):
-        print(f"Color Flip Count: {self.color_flip_count}" )
         return f"Color Flip Count: {self.color_flip_count}\n\n"
     
     def Quit(self):
