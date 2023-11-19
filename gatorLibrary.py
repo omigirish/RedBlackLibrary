@@ -26,10 +26,16 @@ def main():
             if parameters == ['']:
                 parameters=[]
             # Perform required function
+            print(command)
             op= function_map[function](*parameters)
+           
+            print(rb_tree.ColorFlipCount())
             
             # Write function output to file
             output_file.write(f"{op}")
+            if op=="Program Terminated!!":
+                break
+
     # except FileNotFoundError:
     #     print(f"Error: File '{input_filename}' not found.")
     # except Exception as e:
