@@ -12,6 +12,9 @@ test: venv
 	$(PYTHON) gatorlibrary.py test2.txt
 	$(PYTHON) gatorlibrary.py test3.txt
 	$(PYTHON) gatorlibrary.py test4.txt
+	$(PYTHON) gatorlibrary.py example1.txt
+	$(PYTHON) gatorlibrary.py example2.txt
+	$(PYTHON) gatorlibrary.py example3.txt
 
 # Usage...........................................
 # make         To run the default target (all)

@@ -21,8 +21,8 @@ def main():
     with open(input_filename, 'r') as input_file, open(output_filename, 'w') as output_file:
         # Read Input Commands line by line
         for command in input_file:
-            function = command.strip().split("(")[0]
-            parameters = command.strip().split("(")[1].replace('"', '')[:-1].strip(")").split(", ")
+            function,parameters = command.strip().split("(")
+            parameters = parameters.replace('"', '')[:-1].strip(")").strip(" ").split(",")
             if parameters == ['']:
                 parameters=[]
             # Perform required function

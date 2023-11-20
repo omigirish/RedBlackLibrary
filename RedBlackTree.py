@@ -359,10 +359,10 @@ class RedBlackTree:
             if book_node.book.AvailabilityStatus:
                 book_node.book.AvailabilityStatus = False
                 book_node.book.BorrowedBy = patron_id
-                return f"Book {book_id} Borrowed by Patron {patron_id}\n\n"
+                return f"Book{book_id} Borrowed by Patron {patron_id}\n\n"
             else:
                 book_node.book.add_reservation(int(patron_id), int(patron_priority), time.time())
-                return f"Book {book_id} Reserved by Patron {patron_id}\n\n"
+                return f"Book{book_id} Reserved by Patron {patron_id}\n\n"
         else:
             return f"Book {book_id} not found in the Library\n\n"
 
@@ -371,15 +371,15 @@ class RedBlackTree:
         if book_node is not None and not book_node.book.AvailabilityStatus:
             book_node.book.AvailabilityStatus = True
             book_node.book.BorrowedBy = None
-            opmssg=f"Book {book_id} Returned by Patron {patron_id}\n\n"
+            opmssg=f"Book{book_id} Returned by Patron {patron_id}\n\n"
             if book_node.book.ReservationHeap:
                 reservation = book_node.book.ReservationHeap.pop(0)
-                book_node.book.BorrowedBy = reservation[0]
-                opmssg += f"Book {book_id} Allotted to Patron {reservation[0]}\n\n"
+                book_node.book.BorrowedBy = str(reservation)
+                opmssg += f"Book{book_id} Allotted to Patron {reservation}\n\n"
                 book_node.book.AvailabilityStatus = False
             return opmssg
         else:
-            return f"Book {book_id} not found in the Library or not borrowed by Patron {patron_id}\n\n"
+            return f"Book{book_id} not found in the Library or not borrowed by Patron {patron_id}\n\n"
 
     def FindClosestBook(self, target_id):
         closest_nodes = self.FindClosestBookHelper(self.root, target_id)

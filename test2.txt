@@ -4,7 +4,7 @@ InsertBook(3, "The Great Gatsby", "Mark Johnson", "Yes");
 InsertBook(12, "To Kill a Mockingbird", "Sarah Lee", "Yes");
 BorrowBook(101, 3, 2)
 DeleteBook(12)
-PrintBooks(1, 10)
+PrintBooks(1,10)
 DeleteBook(3)
 DeleteBook(5)
 PrintBook(5)
