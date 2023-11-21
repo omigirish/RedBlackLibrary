@@ -1,25 +1,28 @@
 import time
-from Book import Book
+ # Importing the Book class from a module named Book
+from Book import Book 
 
-class RBTreeNode:
-    def __init__(self, book):
-        self.book = book
-        self.color = "RED"
-        self.left = None
-        self.right = None
-        self.parent = None
-        self.colorChangingFunctionId=0
-        
+# Class representing a node in the Red-Black Tree
+class RBTreeNode:  
+    def __init__(self, book):  # Constructor for RBTreeNode
+        self.book = book  # Holds a book object
+        self.color = "RED"  # Node color initialized as RED
+        self.left = None  # Left child initialized as None
+        self.right = None  # Right child initialized as None
+        self.parent = None  # Parent node initialized as None
+        self.colorChangingFunctionId = 0  # Id to track color changes
 
-class RedBlackTree:
-    def __init__(self):
-        self.NULL = RBTreeNode(Book())
-        self.NULL.color = "BLACK"
-        self.NULL.left = None
-        self.NULL.right = None
-        self.root = self.NULL
-        self.color_flip_count = 0
-        self.currentFunctionId = 0
+# Class representing the Red-Black Tree
+class RedBlackTree:  
+    # Constructor for RedBlackTree
+    def __init__(self):  
+        self.NULL = RBTreeNode(Book())  # Creating a NULL node with a default book object
+        self.NULL.color = "BLACK"  # NULL node color set as BLACK
+        self.NULL.left = None  # Initializing left child of NULL node as None
+        self.NULL.right = None  # Initializing right child of NULL node as None
+        self.root = self.NULL  # Initializing root of the tree as NULL
+        self.color_flip_count = 0  # Counter to track color changes
+        self.currentFunctionId = 0  # Identifier to track function calls
 
     def LeftRotate(self, x):
         y = x.right
@@ -450,7 +453,6 @@ class RedBlackTree:
         return f"Color Flip Count: {self.color_flip_count}\n\n"
     
     def ChangeNodeColor(self, node, new_color):
-        
         if node.color != new_color:
             if node.colorChangingFunctionId != self.currentFunctionId:
                 print(node.book.BookId, self.currentFunctionId, node.colorChangingFunctionId,node.color,"-->", new_color, " +1")
@@ -462,7 +464,6 @@ class RedBlackTree:
                 node.colorChangingFunctionId = 0
 
         node.color = new_color
-
     
     def Quit(self):
         return "Program Terminated!!"
