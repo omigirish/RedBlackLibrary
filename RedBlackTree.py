@@ -1,5 +1,5 @@
 import time
- # Importing the Book class from a module named Book
+# Importing the Book class from a module named Book
 from Book import Book 
 
 # Class representing a node in the Red-Black Tree
@@ -98,22 +98,13 @@ class RedBlackTree:
         self.InsertFixup(z)
 
     def InsertFixup(self, z):
-        while z.parent.color == "RED":                        # While parent is red
-            if z.parent == z.parent.parent.right:         # if parent is right child of its parent
+        while z.parent.color == "RED":                     # While parent is red
+            if z.parent == z.parent.parent.right:          # if parent is right child of its parent
                 lg = z.parent.parent.left                  # Left child of grandparent
-                if lg.color == "RED":                          # if color of left child of grandparent i.e, uncle node is red
-                    self.ChangeNodeColor(lg,"BLACK")
-                    # lg.color = "BLACK"
-                    # self.color_flip_count+=1    # Set both children of grandparent node as black
-
+                if lg.color == "RED":                      # if color of left child of grandparent i.e, uncle node is red
+                    self.ChangeNodeColor(lg,"BLACK")       # Set both children of grandparent node as black 
                     self.ChangeNodeColor(z.parent,"BLACK")
-                    # z.parent.color = "BLACK"
-                    # self.color_flip_count+=1
-
-                    self.ChangeNodeColor(z.parent.parent,"RED")
-                    # z.parent.parent.color = "RED"             # Set grandparent node as Red
-                    # self.color_flip_count+=1
-                    
+                    self.ChangeNodeColor(z.parent.parent,"RED") # Set grandparent node as Red                    
                     z = z.parent.parent                   # Repeat the algo with Parent node to check conflicts
                 else:
                     if z == z.parent.left:                # If k is left child of it's parent
@@ -121,46 +112,27 @@ class RedBlackTree:
                         self.RightRotate(z)                        # Call for right rotation
 
                     self.ChangeNodeColor(z.parent,"BLACK")
-                    # z.parent.color = "BLACK"
-                    # self.color_flip_count+=1
-
                     self.ChangeNodeColor(z.parent.parent,"RED")
-                    # z.parent.parent.color = "RED"
-                    # self.color_flip_count+=1
                     self.LeftRotate(z.parent.parent)
             else:       
-                rg = z.parent.parent.right                 # Right child of grandparent
-                if rg.color == 'RED':                          # if color of right child of grandparent i.e, uncle node is red
-                    self.ChangeNodeColor(rg,"BLACK")
-                    # rg.color = "BLACK"                           # Set color of childs as black
-                    # self.color_flip_count+=1
-                    
+                rg = z.parent.parent.right                      # Right child of grandparent
+                if rg.color == 'RED':                           # if color of right child of grandparent i.e, uncle node is red
+                    self.ChangeNodeColor(rg,"BLACK")            # Set color of childs as black
                     self.ChangeNodeColor(z.parent,"BLACK")
-                    # z.parent.color = "BLACK"
-                    # self.color_flip_count+=1
-                    
-                    self.ChangeNodeColor(z.parent.parent,"RED")
-                    # z.parent.parent.color = "RED"             # set color of grandparent as Red
-                    # self.color_flip_count+=1
-                    z = z.parent.parent                   # Repeat algo on grandparent to remove conflicts
+                    self.ChangeNodeColor(z.parent.parent,"RED") # set color of grandparent as Red
+                    z = z.parent.parent                         # Repeat algo on grandparent to remove conflicts
                 else:
-                    if z == z.parent.right:               # if k is right child of its parent
+                    if z == z.parent.right:                     # if k is right child of its parent
                         z = z.parent
-                        self.LeftRotate(z)                        # Call left rotate on parent of k
-                    
+                        self.LeftRotate(z)                       # Call left rotate on parent of k                   
                     self.ChangeNodeColor(z.parent,"BLACK")
-                    # z.parent.color = "BLACK"
-                    # self.color_flip_count+=1
-
                     self.ChangeNodeColor(z.parent.parent,"RED")
-                    # z.parent.parent.color = "RED"
-                    # self.color_flip_count+=1
-                    self.RightRotate(z.parent.parent)              # Call right rotate on grandparent
-            if z == self.root:                            # If k reaches root then break
+                    self.RightRotate(z.parent.parent)             # Call right rotate on grandparent
+            if z == self.root:                                    # If k reaches root then break
                 break
         
-        self.ChangeNodeColor(self.root,"BLACK")
-        # self.root.color = "BLACK"                               # Set color of root as black
+        self.ChangeNodeColor(self.root,"BLACK")                    # Set color of root as black
+                               
         
     def Transplant(self, u, v):
         if u.parent is None:
@@ -178,94 +150,52 @@ class RedBlackTree:
                 w = x.parent.right
                 if w.color == "RED":
                     self.ChangeNodeColor(w,"BLACK")
-                    # w.color = "BLACK"
-                    # self.color_flip_count+=1
-
                     self.ChangeNodeColor(x.parent,"RED")
-                    # x.parent.color = "RED"
-                    # self.color_flip_count+=1
                     self.LeftRotate(x.parent)
                     w = x.parent.right
 
                 if w.left.color == "BLACK" and w.right.color == "BLACK":
                     self.ChangeNodeColor(w,"RED")
-                    # w.color = "RED"
-                    # self.color_flip_count+=1
                     x = x.parent
                 else:
                     if w.right.color == "BLACK":
                         self.ChangeNodeColor(w,"BLACK")
-                        # w.left.color = "BLACK"
-                        # self.color_flip_count+=1
-
                         self.ChangeNodeColor(w,"RED")
-                        # w.color = "RED"
-                        # self.color_flip_count+=1
                         self.RightRotate(w)
                         w = x.parent.right
-
                     self.ChangeNodeColor(w,x.parent.color)
-                    # w.color = x.parent.color
                     self.ChangeNodeColor(x.parent,"BLACK")
-                    # x.parent.color = "BLACK"
-                    # self.color_flip_count+=1
-
                     self.ChangeNodeColor(w.right,"BLACK")
-                    # w.right.color = "BLACK"
-                    # self.color_flip_count+=1
                     self.LeftRotate(x.parent)
                     x = self.root
             else:
                 w = x.parent.left
                 if w.color == "RED":
                     self.ChangeNodeColor(w.color,"BLACK")
-                    # w.color = "BLACK"
-                    # self.color_flip_count+=1
-
                     self.ChangeNodeColor(x.parent,"RED")
-                    # x.parent.color = "RED"
-                    # self.color_flip_count+=1
                     self.RightRotate(x.parent)
                     w = x.parent.left
 
                 if w.right.color == "BLACK" and w.left.color == "BLACK":
                     self.ChangeNodeColor(w,"RED")
-                    # w.color = "RED"
-                    # self.color_flip_count+=1
                     x = x.parent
                 else:
                     if w.left.color == "BLACK":
-
                         self.ChangeNodeColor(w.right,"BLACK")
-                        # w.right.color = "BLACK"
-                        # self.color_flip_count+=1
-
                         self.ChangeNodeColor(w,"RED")
-                        # w.color = "RED"
-                        # self.color_flip_count+=1
                         self.LeftRotate(w)
                         w = x.parent.left
-
                     self.ChangeNodeColor(w,x.parent.color)
-                    # w.color = x.parent.color
-
                     self.ChangeNodeColor(x.parent,"BLACK")
-                    # x.parent.color = "BLACK"
-                    # self.color_flip_count+=1
-
                     self.ChangeNodeColor(w.left,"BLACK")
-                    # w.left.color = "BLACK"
-                    # self.color_flip_count+=1
                     self.RightRotate(x.parent)
                     x = self.root
 
         self.ChangeNodeColor(x,"BLACK")
-        # x.color = "BLACK"
 
     def Delete(self, z):
         y = z
         y_original_color = y.color
-
         if z.left == self.NULL:
             x = z.right
             self.Transplant(z, z.right)
@@ -287,8 +217,6 @@ class RedBlackTree:
             y.right = z.right
             y.right.parent = y
             self.ChangeNodeColor(y, z.color)
-            # y.color = z.color
-            # self.color_flip_count+=1
 
         if y_original_color == "BLACK":
             self.DeleteFixup(x)
@@ -455,11 +383,11 @@ class RedBlackTree:
     def ChangeNodeColor(self, node, new_color):
         if node.color != new_color:
             if node.colorChangingFunctionId != self.currentFunctionId:
-                print(node.book.BookId, self.currentFunctionId, node.colorChangingFunctionId,node.color,"-->", new_color, " +1")
+                print(node.book.BookId, node.color,"-->", new_color, " +1")
                 self.color_flip_count += 1  # Increment color flip count
                 node.colorChangingFunctionId = self.currentFunctionId
             else:
-                print(node.book.BookId, self.currentFunctionId, node.colorChangingFunctionId,node.color,"-->", new_color, " -1")
+                print(node.book.BookId, node.color,"-->", new_color, " -1")
                 self.color_flip_count -= 1 
                 node.colorChangingFunctionId = 0
 
